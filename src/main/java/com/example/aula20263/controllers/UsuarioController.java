@@ -1,11 +1,12 @@
 package com.example.aula20263.controllers;
 
 import com.example.aula20263.entities.Usuario;
+import com.example.aula20263.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,24 +14,22 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-    private final ResourceLoader resourceLoader;
-
-    public UsuarioController(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @GetMapping
     public ResponseEntity<?> listarTodos(){
 
-        List<Usuario> usuarios =
-                List.of(new Usuario(1L,
-                        "Samuel",
-                        "06372005948",
-                        "123456",
-                        "samuel.matos@prof.sc.senac.br"));
+        return  ResponseEntity.ok(usuarioRepository.findAll());
+    }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Usuario> criar(@RequestBody Usuario usuario){
 
-        return  ResponseEntity.ok(usuarios);
+        var usuarioBanco = usuarioRepository.save(usuario);
+        return ResponseEntity.ok(usuarioBanco);
+
     }
 
 
