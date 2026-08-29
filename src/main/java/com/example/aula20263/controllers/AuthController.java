@@ -1,7 +1,9 @@
 package com.example.aula20263.controllers;
 
 
-import com.example.aula20263.dto.LoginRequestDto;
+import com.example.aula20263.dto.LoginRequest;
+import com.example.aula20263.dto.LoginResponse;
+import com.example.aula20263.repository.UsuarioRepository;
 import com.example.aula20263.services.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,15 +23,21 @@ public class AuthController {
     private TokenService tokenService;
 
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+
     @PostMapping("/login")
     @Operation(summary = "Login", description = "Método responsavel por efetuar o login do usuário!")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto resquest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest resquest) {
 
-        if (resquest.email().equals("string") && resquest.senha().equals("string")) {
+
+
+        if (usuarioRepository.existsUsuarioByEmailAndSenha(resquest.email(), resquest.senha())) {
 
             var token = tokenService.gerarToken(resquest);
 
-            return ResponseEntity.ok(token);
+            return ResponseEntity.ok(new LoginResponse(token));
         }
 
         return ResponseEntity.badRequest().body("Usuário ou senha Invalido!");
