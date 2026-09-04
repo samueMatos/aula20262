@@ -1,4 +1,5 @@
-export default function SistemaLayout({children}){
+export default function 
+SistemaLayout({children}){
     return (<>
     {children}
     </>);
