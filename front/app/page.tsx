@@ -1,3 +1,4 @@
+import Link from "@/node_modules/next/link";
 
 
 export default function Home() {
@@ -250,7 +251,13 @@ export default function Home() {
         <ul className="nav-links">
           <li><a href="#sobre">Nossa História</a></li>
           <li><a href="#recursos">Recursos</a></li>
-          <li><a href="#login" className="btn-login">Entrar</a></li>
+          <li>
+            
+            <Link href="/login" className="btn-login">Entrar</Link>
+          </li>
+
+          
+          
         </ul>
       </div>
     </header>
