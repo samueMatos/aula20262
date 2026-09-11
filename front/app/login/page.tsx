@@ -1,13 +1,30 @@
 'use client'
 
+import axios from "@/node_modules/axios/index";
 import { useRouter } from "@/node_modules/next/navigation";
+import { LoginResponse } from "../types/auth";
 
 
 export default function Login(){
     const router = useRouter();
 
     const handleLogin = async(formData:FormData) =>{
-        router.push("/home")
+        try {
+            debugger;
+            const emailTela = formData.get("email")?.toString() ?? "";
+            const senhaTela = formData.get("senha")?.toString() ?? "";
+
+            var loginResposta = await axios.post<LoginResponse>("http://localhost:8080/auth/login",
+            {email:emailTela,senha:senhaTela});
+
+            if(loginResposta.status==200){
+                router.push("/home")
+            }else{
+                alert("Login ou senha Invalido!")
+            }
+        } catch (error) {
+            alert("Login ou senha Invalido!")
+        }
     }
 
 
