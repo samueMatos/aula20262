@@ -12,7 +12,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className="h-full">
+      className="h-full"
+      >
       <body>
         {children}
       </body>
