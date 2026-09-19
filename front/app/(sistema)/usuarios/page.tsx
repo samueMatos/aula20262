@@ -63,6 +63,9 @@ export default function Usuarios(){
                                     <th className="px-6 py-3.5 text-xs font-semibold text-slate-600 uppercase tracking-wider">
                                         Status
                                     </th>
+                                    <th className="px-6 py-3.5 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                                        Ações
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-200">
@@ -82,6 +85,9 @@ export default function Usuarios(){
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium text-slate-800">
                                         {usuario.status}
+                                    </td>
+                                    <td className="px-6 py-4 text-sm font-medium text-slate-800">
+                                        <Link href={`/usuarios/${usuario.id}/editar`}>Editar</Link>
                                     </td>
                                 </tr>
                                 ))}
