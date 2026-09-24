@@ -1,37 +1,108 @@
+'use client'
+
+import { Usuario, UsuarioFormProps } from "@/app/types/usuario";
+import axios from "@/node_modules/axios/index";
 import Link from "@/node_modules/next/link";
+import { useRouter } from "@/node_modules/next/navigation";
+import { useState } from "react";
 
 
 
-export default function UsuarioForm() {
+export default function UsuarioForm({usuarioExistente}:UsuarioFormProps) {
+    const router = useRouter();
+
+    const [ usuario,setUsuario ] = useState<Usuario>(
+        usuarioExistente ||
+        new Usuario(null,"","","ATIVO","","")
+    );
+
+    const handlerChange = ( campo: 'nome'|  'email' |'cpf'| 'senha', valor:string) =>{
+        setUsuario(valorAnterior => 
+            new Usuario(
+                valorAnterior.id,
+                campo === 'nome' ? valor : valorAnterior.nome,
+                campo === 'email' ? valor : valorAnterior.email,
+                valorAnterior.status,
+                campo === 'cpf' ? valor : valorAnterior.cpf,
+                campo === 'senha' ? valor : valorAnterior.senha
+            )
+        )
+    }
+
+
+
+    const handlerSalvar = async (formData : FormData) =>{
+
+
+      var dadosRetorno = await  axios.post<number>('http://localhost:8080/usuarios',usuario)
+
+      if(dadosRetorno.status==200){
+        alert("Usuário foi salvo com sucesso!");
+      }else{
+        alert(dadosRetorno.data);
+
+        return;
+      }
+      
+
+      router.push("/usuarios");
+
+    }
+
+
     return (
-        <form className="space-y-6">
+        <form action={handlerSalvar} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-blue-200">
                         Nome completo:
                     </label>
-                    <input name="nome" className="w-full px-4 py-2.5 bg-blue-950 border border-blue-800 rounded-xl text-blue-100 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 shadow-inner">
+                    <input 
+                    name="nome" 
+                    value={usuario.nome}
+                    required
+                    onChange={(e)=> handlerChange('nome',e.target.value)}
+                    placeholder="João da Silva Sauro"
+                    className="w-full px-4 py-2.5 bg-blue-950 border border-blue-800 rounded-xl text-blue-100 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 shadow-inner">
                     </input>
                 </div>
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-blue-200">
                         CPF:
                     </label>
-                    <input name="CPF" className="w-full px-4 py-2.5 bg-blue-950 border border-blue-800 rounded-xl text-blue-100 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 shadow-inner">
+                    <input 
+                    name="CPF" 
+                    value={usuario.cpf}
+                    required
+                    placeholder="000.000.000-00"
+                    onChange={(e)=> handlerChange('cpf',e.target.value)}
+                    className="w-full px-4 py-2.5 bg-blue-950 border border-blue-800 rounded-xl text-blue-100 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 shadow-inner">
                     </input>
                 </div>
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-blue-200">
                         E-mail
                     </label>
-                    <input name="email" className="w-full px-4 py-2.5 bg-blue-950 border border-blue-800 rounded-xl text-blue-100 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 shadow-inner">
+                    <input 
+                    name="email" 
+                    value={usuario.email}
+                    required
+                    placeholder="EmailDoJoao@SilvaSauro.com.br"
+                    onChange={(e)=> handlerChange('email',e.target.value)}
+                    className="w-full px-4 py-2.5 bg-blue-950 border border-blue-800 rounded-xl text-blue-100 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 shadow-inner">
                     </input>
                 </div>
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-blue-200">
                         Senha:
                     </label>
-                    <input name="Senha" type="password" className="w-full px-4 py-2.5 bg-blue-950 border border-blue-800 rounded-xl text-blue-100 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 shadow-inner">
+                    <input 
+                    name="Senha" 
+                    value={usuario.senha}
+                    required
+                    placeholder= "*********************"
+                    onChange={(e)=> handlerChange('senha',e.target.value)}
+                    type="password" className="w-full px-4 py-2.5 bg-blue-950 border border-blue-800 rounded-xl text-blue-100 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 shadow-inner">
                     </input>
                 </div>
             </div>
