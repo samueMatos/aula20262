@@ -1,11 +1,12 @@
-package com.example.aula20263.controllers;
+package com.example.aula20263.presentation;
 
-import com.example.aula20263.dto.AtualizarStatusRequest;
-import com.example.aula20263.entities.EnumStatusUsuario;
-import com.example.aula20263.entities.Usuario;
-import com.example.aula20263.repository.UsuarioRepository;
+import com.example.aula20263.application.dto.AtualizarStatusRequest;
+import com.example.aula20263.application.dto.UsuarioResponse;
+import com.example.aula20263.application.services.UsuarioService;
+import com.example.aula20263.domain.entities.EnumStatusUsuario;
+import com.example.aula20263.domain.entities.Usuario;
+import com.example.aula20263.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +20,14 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @GetMapping
-    public ResponseEntity<?> listarTodos(){
 
-        return  ResponseEntity.ok(usuarioRepository.findAll());
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @GetMapping
+    public ResponseEntity<List<UsuarioResponse>> listarTodos(){
+
+        return  ResponseEntity.ok(usuarioService.listarTodosUsuariosTable());
     }
 
     @GetMapping("/{id}")

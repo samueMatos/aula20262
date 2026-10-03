@@ -1,4 +1,4 @@
-package com.example.aula20263.configuration;
+package com.example.aula20263.infra.configuration;
 
 
 import org.springframework.context.annotation.Configuration;

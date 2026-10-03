@@ -1,8 +1,7 @@
-package com.example.aula20263.repository;
+package com.example.aula20263.domain.repository;
 
-import com.example.aula20263.entities.EnumStatusUsuario;
-import com.example.aula20263.entities.Usuario;
-import org.springframework.data.domain.Example;
+import com.example.aula20263.domain.entities.EnumStatusUsuario;
+import com.example.aula20263.domain.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

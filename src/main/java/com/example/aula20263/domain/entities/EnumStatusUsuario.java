@@ -1,4 +1,4 @@
-package com.example.aula20263.entities;
+package com.example.aula20263.domain.entities;
 
 public enum EnumStatusUsuario {
     ATIVO,

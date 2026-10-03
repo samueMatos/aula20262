@@ -1,7 +1,7 @@
-package com.example.aula20263.configuration;
+package com.example.aula20263.infra.configuration;
 
 
-import com.example.aula20263.services.TokenService;
+import com.example.aula20263.application.services.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

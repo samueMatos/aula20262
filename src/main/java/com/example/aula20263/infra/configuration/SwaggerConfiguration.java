@@ -1,4 +1,4 @@
-package com.example.aula20263.configuration;
+package com.example.aula20263.infra.configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
