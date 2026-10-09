@@ -1,6 +1,8 @@
 package com.example.aula20263.presentation;
 
 import com.example.aula20263.application.dto.AtualizarStatusRequest;
+import com.example.aula20263.application.dto.CriarAdminRequest;
+import com.example.aula20263.application.dto.CriarAdminResponse;
 import com.example.aula20263.application.dto.UsuarioResponse;
 import com.example.aula20263.application.services.UsuarioService;
 import com.example.aula20263.domain.entities.EnumStatusUsuario;
@@ -30,6 +32,22 @@ public class UsuarioController {
         return  ResponseEntity.ok(usuarioService.listarTodosUsuariosTable());
     }
 
+    @PostMapping("/admin")
+    public ResponseEntity<CriarAdminResponse> criarAdmin(@RequestBody CriarAdminRequest criarAdminRequest){
+
+        try{
+            CriarAdminResponse respostaSalvar = usuarioService.criarAdmin(criarAdminRequest);
+            return ResponseEntity.ok(respostaSalvar);
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
+
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id){
 
@@ -40,6 +58,8 @@ public class UsuarioController {
 
         return  ResponseEntity.notFound().build();
     }
+
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

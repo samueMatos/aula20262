@@ -1,10 +1,10 @@
 package com.example.aula20263.application.services;
 
-import com.example.aula20263.application.dto.LoginRequest;
-import com.example.aula20263.application.dto.LoginResponse;
-import com.example.aula20263.application.dto.UsuarioResponse;
+import com.example.aula20263.application.dto.*;
+import com.example.aula20263.domain.entities.Usuario;
 import com.example.aula20263.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +17,10 @@ public class UsuarioService {
 
     @Autowired
     private TokenService tokenService;
+
+    @Value("${spring.secretkey}")
+    private String secret;
+
 
     public LoginResponse validarUsuarioAutenticadoRetornaToken(LoginRequest resquest) {
 
@@ -35,5 +39,18 @@ public class UsuarioService {
                 .stream()
                 .map(UsuarioResponse::new)
                 .toList();
+    }
+
+    public CriarAdminResponse criarAdmin(CriarAdminRequest criarAdminRequest) {
+
+        if(!criarAdminRequest.secretKey().equals(secret)){
+            return new CriarAdminResponse(0L,"Usuario Salvo com sucesso!");
+
+        }
+
+        Usuario usuarioAdminSalvar = new Usuario(criarAdminRequest);
+        usuarioRepository.save(usuarioAdminSalvar);
+
+        return new CriarAdminResponse(usuarioAdminSalvar.getId(),"Usuario Salvo com sucesso!");
     }
 }
