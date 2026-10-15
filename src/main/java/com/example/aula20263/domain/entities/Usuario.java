@@ -1,10 +1,8 @@
 package com.example.aula20263.domain.entities;
 
 import com.example.aula20263.application.dto.CriarAdminRequest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.aula20263.domain.valueobject.CPF;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -19,7 +17,8 @@ public class Usuario {
 
     private String nome;
 
-    private String cpf;
+    @Embedded
+    private CPF cpf;
 
     private String senha;
 
@@ -30,7 +29,7 @@ public class Usuario {
     private EnumStatusUsuario status = EnumStatusUsuario.ATIVO;
 
     public Usuario(CriarAdminRequest criarAdminRequest) {
-        this.setCpf(criarAdminRequest.cpf());
+        this.setCpf(new CPF(criarAdminRequest.cpf()));
         this.setNome(criarAdminRequest.nome());
         this.setSenha(criarAdminRequest.senha());
         this.setEmail(criarAdminRequest.email());
