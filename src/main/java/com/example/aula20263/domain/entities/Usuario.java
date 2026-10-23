@@ -2,12 +2,15 @@ package com.example.aula20263.domain.entities;
 
 import com.example.aula20263.application.dto.CriarAdminRequest;
 import com.example.aula20263.application.dto.EnumStatusUsuario;
+import com.example.aula20263.application.dto.UsuarioLogado;
 import com.example.aula20263.application.dto.UsuarioRequest;
 import com.example.aula20263.domain.valueobject.CPF;
 import jakarta.persistence.*;
 import lombok.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -33,6 +36,8 @@ public class Usuario implements UserDetails {
     private String email;
 
     private String role = "ROLE_USER";
+
+    private Long empresa_id;
 
     private EnumStatusUsuario status = EnumStatusUsuario.ATIVO;
 
@@ -60,9 +65,11 @@ public class Usuario implements UserDetails {
         this.setRole("ROLE_USER");
     }
 
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(this.role));
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.example.aula20263.domain.repository.UsuarioRepository;
 import com.example.aula20263.domain.valueobject.CPF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,8 +57,13 @@ public class UsuarioService {
         return new CriarAdminResponse(usuarioAdminSalvar.getId(),"Usuario Salvo com sucesso!");
     }
 
+    public UsuarioLogado getUsuarioLogado(){
+        return (UsuarioLogado) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
     public UsuarioResponse salvarUsuario(UsuarioRequest usuario, Long id) {
 
+        var usuarioLogado = getUsuarioLogado();
         //Novo Usuario
         if(id == 0L) {
             Usuario usuarioBanco = new Usuario(usuario);
@@ -72,6 +78,7 @@ public class UsuarioService {
                 usuarioBanco.setCpf(new CPF(usuario.cpf()));
                 usuarioBanco.setEmail(usuario.email());
                 usuarioBanco.setSenha(usuario.senha());
+                usuarioBanco.setEmpresa_id(usuarioLogado.empresa_id());
                 usuarioRepository.save(usuarioBanco);
                 return  new UsuarioResponse(usuarioBanco);
             }
