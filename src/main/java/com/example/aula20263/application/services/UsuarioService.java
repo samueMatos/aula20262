@@ -38,7 +38,16 @@ public class UsuarioService {
 
     public List<UsuarioResponse> listarTodosUsuariosTable(){
 
-        return  usuarioRepository.findAll()
+        var usuarioLogado = getUsuarioLogado();
+
+        if(usuarioLogado.empresa_id() ==null){
+            return  usuarioRepository.findAll()
+                    .stream()
+                    .map(UsuarioResponse::new)
+                    .toList();
+        }
+
+        return  usuarioRepository.getUsuariosByEmpresa_Id(usuarioLogado.empresa_id())
                 .stream()
                 .map(UsuarioResponse::new)
                 .toList();
@@ -73,12 +82,13 @@ public class UsuarioService {
         }else {
             //Usuario existente
             Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
+
+
             if(usuarioBanco!= null ){
                 usuarioBanco.setNome(usuario.nome());
                 usuarioBanco.setCpf(new CPF(usuario.cpf()));
                 usuarioBanco.setEmail(usuario.email());
                 usuarioBanco.setSenha(usuario.senha());
-                usuarioBanco.setEmpresa_id(usuarioLogado.empresa_id());
                 usuarioRepository.save(usuarioBanco);
                 return  new UsuarioResponse(usuarioBanco);
             }
