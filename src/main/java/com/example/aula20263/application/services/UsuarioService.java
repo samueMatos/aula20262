@@ -2,7 +2,9 @@ package com.example.aula20263.application.services;
 
 import com.example.aula20263.application.dto.*;
 import com.example.aula20263.application.dto.EnumStatusUsuario;
+import com.example.aula20263.domain.entities.Curso;
 import com.example.aula20263.domain.entities.Usuario;
+import com.example.aula20263.domain.repository.CursoRepository;
 import com.example.aula20263.domain.repository.UsuarioRepository;
 import com.example.aula20263.domain.valueobject.CPF;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CursoRepository cursoRepository;
 
     @Autowired
     private TokenService tokenService;
@@ -117,6 +122,31 @@ public class UsuarioService {
             usuarioBanco.setStatus(status);
             usuarioRepository.save(usuarioBanco);
             return  true;
+        }
+        return false;
+
+    }
+
+    public boolean matricularAluno(Long id, MatriculaRequest matriculaRequest) {
+
+        Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
+        Curso cursoBanco = cursoRepository.findById(matriculaRequest.curso_id()).orElse(null);
+        if(usuarioBanco!= null && cursoBanco!= null) {
+
+          var curso =  usuarioBanco.getCursos().stream()
+                  .anyMatch(u->u.getId().equals(cursoBanco.getId()));
+
+          if(curso){
+              return true;
+          }else {
+              usuarioBanco.getCursos().add(cursoBanco);
+
+              usuarioRepository.save(usuarioBanco);
+
+
+              return true;
+          }
+
         }
         return false;
 

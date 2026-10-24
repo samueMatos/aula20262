@@ -101,4 +101,17 @@ public class UsuarioController {
     }
 
 
+    @PatchMapping("/{id}/matricular")
+    public  ResponseEntity<?> matricular(@PathVariable Long id, @RequestBody MatriculaRequest matriculaRequest){
+
+        boolean retornoMatricula = usuarioService.matricularAluno(id,matriculaRequest);
+
+        if(retornoMatricula){
+            return ResponseEntity.ok().build();
+        }
+
+        return  ResponseEntity.notFound().build();
+    }
+
+
 }
