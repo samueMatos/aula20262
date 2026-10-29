@@ -1,7 +1,7 @@
 "use client"
 
+import { consultaUsuarioPorId } from "@/app/services/usuarioService";
 import { Usuario } from "@/app/types/usuario";
-import axios from "@/node_modules/axios/index";
 import Link from "@/node_modules/next/link";
 import { useParams, useRouter } from "@/node_modules/next/navigation";
 import { useEffect, useState } from "react";
@@ -24,10 +24,9 @@ export default function EditarUsuario(){
 
     const buscarDados =async() =>{
 
-        const valorUsuarioBack = await axios.get<Usuario>('http://localhost:8080/usuarios/'+codigo);
-
-        if(valorUsuarioBack.status==200){
-            setUsuario(valorUsuarioBack.data);
+        const valorUsuarioBack = await consultaUsuarioPorId(codigo);
+        if(valorUsuarioBack){
+            setUsuario(valorUsuarioBack);
         }else{
             router.push("/usuarios")
         }

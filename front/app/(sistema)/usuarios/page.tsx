@@ -1,6 +1,6 @@
 "use client"
+import { atualizarStatusUsuario, buscarListaUsuarios, deletarUsuario } from "@/app/services/usuarioService";
 import { Usuario } from "@/app/types/usuario";
-import axios from "@/node_modules/axios/index";
 import Link from "@/node_modules/next/link";
 import { useEffect, useState } from "react";
 
@@ -16,9 +16,9 @@ export default function Usuarios(){
     const carregarDados = async ()=>{
 
         try {
-            const dados = await axios.get<Usuario[]>("http://localhost:8080/usuarios");
+            const dados = await buscarListaUsuarios();
 
-            setUsuarios( dados.data);
+            setUsuarios( dados);
 
         } catch (error) {
             alert("Erro ao carregar dados!")
@@ -29,13 +29,12 @@ export default function Usuarios(){
 
     const handleDeletarUsuario = async(usuario:Usuario) =>{
 
-        var dadosRetorno = await  
-        axios.delete('http://localhost:8080/usuarios/'+usuario.id+'/excluir');
-
-        if(dadosRetorno.status==200){
+        var dadosRetorno = await  deletarUsuario(usuario.id || 0);
+       
+        if(dadosRetorno==200){
             alert("Excluido com sucesso!");
         }else{
-            alert(dadosRetorno.data);
+            alert("Erro ao excluir usuário!");
 
             return;
         }
@@ -46,24 +45,7 @@ export default function Usuarios(){
 
     const handleAlterarStatusUsuario = async(usuario:Usuario) =>{
 
-
-        var novoStatus = {};
-        if(usuario.status ==="ATIVO"){
-            novoStatus = {status:"BLOQUEADO"}
-        }else{
-            novoStatus = {status:"ATIVO"}
-        }
-
-        var dadosRetorno = await  
-        axios.patch('http://localhost:8080/usuarios/'+usuario.id+'/status',novoStatus);
-
-        if(dadosRetorno.status==200){
-            alert("Atulizado status com sucesso!");
-        }else{
-            alert(dadosRetorno.data);
-
-            return;
-        }
+        await atualizarStatusUsuario(usuario);
 
         carregarDados();
 

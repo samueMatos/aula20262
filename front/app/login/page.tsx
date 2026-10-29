@@ -2,8 +2,8 @@
 
 import axios from "@/node_modules/axios/index";
 import { useRouter } from "@/node_modules/next/navigation";
+import Cookies from "js-cookie";
 import { LoginResponse } from "../types/auth";
-
 
 export default function Login(){
     const router = useRouter();
@@ -18,6 +18,7 @@ export default function Login(){
             {email:emailTela,senha:senhaTela});
 
             if(loginResposta.status==200){
+                Cookies.set('token',loginResposta.data.token,{secure: true, expires: 7});
                 router.push("/home")
             }else{
                 alert("Login ou senha Invalido!")
