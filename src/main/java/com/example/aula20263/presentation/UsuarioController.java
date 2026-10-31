@@ -3,6 +3,7 @@ package com.example.aula20263.presentation;
 import com.example.aula20263.application.dto.*;
 import com.example.aula20263.application.services.UsuarioService;
 import com.example.aula20263.application.dto.EnumStatusUsuario;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -112,6 +113,13 @@ public class UsuarioController {
 
         return  ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/buscarusuariologado")
+    @Operation(summary = "Usuario Logado",description = "Usuario logado")
+    public ResponseEntity<UsuarioResponse> buscarUsuarioLogado(){
+        return ResponseEntity.ok(usuarioService.BuscarUsuarioLogado());
+    }
+
 
 
 }
