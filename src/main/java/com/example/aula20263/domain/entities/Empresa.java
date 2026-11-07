@@ -26,4 +26,8 @@ public class Empresa {
 
     @OneToMany(mappedBy = "empresa")
     private List<Usuario> usuarios;
+
+
+    @OneToMany(mappedBy = "empresa")
+    private List<Curso> cursos;
 }
