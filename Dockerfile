@@ -6,6 +6,8 @@ COPY . .
 
 RUN mvn clean package -DskipTests
 
+FROM eclipse-temurin:21-jre-jammy
+
 WORKDIR /app
 
 COPY --from=builder /app/target/aula20263-0.0.1-SNAPSHOT.jar .
