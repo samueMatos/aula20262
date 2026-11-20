@@ -18,7 +18,7 @@ import java.util.Set;
 public class Curso {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValuae (strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
 
