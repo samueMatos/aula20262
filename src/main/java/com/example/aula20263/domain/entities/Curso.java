@@ -22,7 +22,7 @@ public class Curso {
     @EqualsAndHashCode.Include
     private Long id;
 
-    private String titulo;
+    private String titulos;
 
     private String descricao;
 
